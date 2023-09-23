@@ -32,7 +32,7 @@ export const authOptions = {
             if(!existingUser){
                 return null
             }
-            const passwordMatch = await compare(credentials.password, existingUser.password)
+            const passwordMatch = await compare(credentials?.password, existingUser.password)
             if (!passwordMatch) {
                 return null
             }

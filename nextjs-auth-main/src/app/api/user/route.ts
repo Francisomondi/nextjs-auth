@@ -12,7 +12,7 @@ const userSchema = z.object({
     .string()
     .min(1, 'Password is required')
     .min(8, 'Password must have than 8 characters'),
-  });
+});
 
 export async function POST(req: Request){
     try {
@@ -49,6 +49,6 @@ export async function POST(req: Request){
 
         return NextResponse.json({user: data, messege: 'user created successfully'}, {status:200})
     } catch (error) {
-        return NextResponse.json({messege: 'Could not create user'}, {status:500})
+        return NextResponse.json({messege: 'Could not create User'}, {status:500})
     }
 }
