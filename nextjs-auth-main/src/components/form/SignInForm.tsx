@@ -16,6 +16,7 @@ import { Button } from '../ui/button';
 import Link from 'next/link';
 import GoogleSignInButton from '../GoogleSignInButton';
 import {signIn} from 'next-auth/react'
+import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email'),
@@ -26,6 +27,7 @@ const FormSchema = z.object({
 });
 
 const SignInForm = () => {
+  const router = useRouter()
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -36,17 +38,18 @@ const SignInForm = () => {
 
   const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     
-    const signInData = await signIn('credentials',
+    const signInData = await signIn('Credentials',
     {
       email: values.email,
       password: values.password
     })
-  console.log(signInData)
+  if(signInData?.error){
+    console.log(signInData.error)
+  }
+  else{
+    router.push('/admin')
+  }
 };
-
-const userdata= ()=>{
-  console.log('use data goes here')
-}
 
   return (
     <Form {...form}>
@@ -59,7 +62,7 @@ const userdata= ()=>{
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder='mail@example.com' {...field} />
+                  <Input autoComplete='off' placeholder='mail@example.com' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -73,6 +76,7 @@ const userdata= ()=>{
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
+                  autoComplete='off'
                     type='password'
                     placeholder='Enter your password'
                     {...field}

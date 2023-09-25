@@ -5,7 +5,7 @@ import { db } from "./db";
 import { compare } from "bcrypt";
 
 export const authOptions = {
-    pages:{
+    pages: {
         adapter: PrismaAdapter(db),
         session:{
             strategy:'jwt'
@@ -15,9 +15,7 @@ export const authOptions = {
     
     providers: [
         CredentialsProvider({
-    
             name: "Credentials",
-            
             credentials: {
             email: { label: "email", type: "email", placeholder: "jsmith" },
             password: { label: "Password", type: "password" }
@@ -32,7 +30,7 @@ export const authOptions = {
             if(!existingUser){
                 return null
             }
-            const passwordMatch = await compare(credentials?.password, existingUser.password)
+            const passwordMatch = await compare(credentials.password, existingUser.password)
             if (!passwordMatch) {
                 return null
             }
