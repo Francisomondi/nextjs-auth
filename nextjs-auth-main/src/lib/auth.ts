@@ -4,7 +4,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { db } from "./db";
 import { compare } from "bcrypt";
 
-export const authOptions = {
+export const authOptions <authProvider></authProvider>= {
     pages: {
         adapter: PrismaAdapter(db),
         session:{
@@ -17,7 +17,7 @@ export const authOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-            email: { label: "email", type: "email", placeholder: "jsmith" },
+            email: { label: "email", type: "email", placeholder: "jsmith@mail.com" },
             password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
