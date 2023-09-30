@@ -1,15 +1,15 @@
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { db } from "./db";
 import { compare } from "bcrypt";
 
-export const authOptions <authProvider></authProvider>= {
+export const authOptions: NextAuthOptions = {
+    adapter: PrismaAdapter(db),
+    session:{
+        strategy:'jwt'
+    },
     pages: {
-        adapter: PrismaAdapter(db),
-        session:{
-            strategy:'jwt'
-        },
         signIn: '/sign-in'
     },
     
@@ -17,22 +17,22 @@ export const authOptions <authProvider></authProvider>= {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-            email: { label: "email", type: "email", placeholder: "jsmith@mail.com" },
-            password: { label: "Password", type: "password" }
+            email: { label: "Email", type: "text", placeholder: "jsmith@mail.com" },
+            password: { label: "Password", type: "text" }
             },
             async authorize(credentials) {
                 if (!credentials?.email || !credentials.password) {
-                    return null
+                    throw new Error('invalid email or password')
                 }
             const existingUser = await db.user.findUnique({
                 where: {email: credentials?.email}
             })
             if(!existingUser){
-                return null
+                throw new Error('invalid email or password')
             }
             const passwordMatch = await compare(credentials.password, existingUser.password)
             if (!passwordMatch) {
-                return null
+                throw new Error('invalid email or password')
             }
 
             return {

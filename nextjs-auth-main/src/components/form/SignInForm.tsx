@@ -41,8 +41,10 @@ const SignInForm = () => {
     const signInData = await signIn('Credentials',
     {
       email: values.email,
-      password: values.password
+      password: values.password,
+      redirect: false
     })
+
   if(signInData?.error){
     console.log(signInData.error)
   }
