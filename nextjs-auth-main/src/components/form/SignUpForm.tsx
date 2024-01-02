@@ -35,6 +35,7 @@ const FormSchema = z
 
 const SignUpForm = () => {
   const router= useRouter()
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -51,17 +52,18 @@ const SignUpForm = () => {
       headers: {
         'content-type': 'application/json'
       },
-      body:JSON.stringify({
+      body: JSON.stringify({
         username: values.username,
         email:values.email,
         password:values.password
       })
     })
+
     if(response.ok){
           router.push('/sign-in')
     }
     else{
-      console.error('registration failed')
+      console.error('Registration failed')
     }
   };
 
